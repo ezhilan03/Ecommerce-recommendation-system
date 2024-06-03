@@ -1,114 +1,65 @@
-# Ecommerce recommendation system design using Python on Amazon & Home Depot's dataset
-
+# Ecommerce recommendation system design using Python
 A well developed recommendation system will help businesses improve their shopper's experience on website and result in better customer acquisition and retention.
 
 The recommendation system, I have designed below is based on the journey of a new customer from the time he/she lands on the business’s website for the first time to when he/she makes repeat purchases. 
 
-The data sets are from
+The data sets are from:
 1. Amazon product ratings by multipe users, Data Source: https://www.kaggle.com/skillsmuggler/amazon-ratings
 2. Home Depot products with descriptions, Data Source: https://www.kaggle.com/c/home-depot-product-search-relevance/data
+3. Twitter data: https://www.kaggle.com/datasets/jp797498e/twitter-entity-sentiment-analysis
 
-The recommendation system is designed in 3 parts based on the business context:
+## System Design Overview
+The recommendation system is designed in three parts based on the business context:
 
-When a new customer without any previous purchase history visits the e-commerce website for the first time, he/she is recommended the most popular products sold on the company's website. Once, he/she makes a purchase, the recommendation system updates and recommends other products based on the purchase history and ratings provided by other users on the website. The latter part is done using collaborative filtering techniques.
+1. ### Cold Start Recommendation:
+   When a new customer without any previous purchase history visits the e-commerce website for the first time, they are recommended the most popular products sold on the company's website or we get their inference through their microblogging data and recommend similar products.
 
-Strategy/Techniques used: 
+2. ### Collaborative Filtering:
+   Once the customer makes a purchase, the recommendation system updates and recommends other products based on the purchase history and ratings provided by other users on the website using collaborative filtering techniques.
 
-#### 1) Product popularity based recommendation system targeted at new customers:
+3. ### Content-Based Recommendation:
+    For businesses without any user-item purchase history, a search engine-based recommendation system is designed. The product recommendations are based on textual clustering analysis given in the product description.
 
-Popularity based are a great strategy to target the new customers with the most popular products sold on a business's website and is very useful to cold start a recommendation engine.
+## Strategy/Techniques used: 
+### 1. Cold Start Problem Solution
+For new businesses without any user-item purchase history, sentiment analysis on social media data (e.g., Twitter) is performed to categorize tweets into positive, neutral, and negative sentiments. This helps identify trends and popular products based on customer opinions.
 
-#### 2) Model-based collaborative filtering system:
+#### Sentiment Analysis using VADER and BERT:
+VADER: A rule-based sentiment analysis tool specifically designed for social media text.
 
-Recommend items to users based on purchase history and similarity of ratings provided by other users who bought items to that of a particular customer.
+BERT: A state-of-the-art machine learning model used for text classification and sentiment analysis.
 
-A model based collaborative filtering technique is closen here as it helps in making predictinfg products for a particular user by identifying patterns based on preferences from multiple user data.
+#### Example Workflow:
+1) Preprocessing: Clean and preprocess the text data to remove noise and irrelevant information.
+2) Sentiment Analysis: Use VADER and BERT to classify tweets into positive, neutral, or negative sentiments.
+3) Categorization: Assign categories to products based on the sentiment analysis results.
 
-#### 3) Item-item based collaborative filtering system: 
+### 2) Product Popularity-Based Recommendation System
+This strategy targets new customers with the most popular products sold on a business's website, which is useful for addressing the cold start problem of a recommendation engine.
 
-For a business without any user-item purchase history, a search engine based recommendation system can be designed for users. The product recommendations can be based on textual clustering analysis given in product description.
-Predictions done based on other products from the same cluster (based of text analysis of product description) on key search words.
+Analysis:
 
-### Recommendation system part I: Product pupularity based system targetted at new customers
-
-### Product popularity based recommendation system targeted at new customers
-
-Popularity based are a great strategy to target the new customers with the most popular products sold on a business's website and is very useful to cold start a recommendation engine.
+The above graph shows the most popular products (arranged in descending order) sold by the business. For example, product ID #B001MA0QY2 has sales of over 7000, and the next most popular product, ID #B0009V1YR8, has sales of 3000, etc.
 
 ![image](https://user-images.githubusercontent.com/38769913/51401953-27a90a00-1b1a-11e9-9dca-c18c9d592121.png)
 
+### 3) Model-Based Collaborative Filtering System: 
 
-### Analysis:
+This technique recommends items to users based on purchase history and the similarity of ratings provided by other users who bought similar items. A model-based collaborative filtering technique is chosen as it helps in predicting products for a particular user by identifying patterns based on preferences from multiple user data.
 
-The above graph gives us the most popular products (arranged in descending order) sold by the business. For eaxmple, product, ID # B001MA0QY2 has sales of over 7000, the next most popular product, ID # B0009V1YR8 has sales of 3000, etc.
+Recommending top 10 highly correlated products in sequence based on a customer's purchase history:
 
-### Recommendation system part II: 
-
-### Model-based collaborative filtering system based on customer's purchase history and ratings provided by other users who bought items similar items
-
-#### Recommending top 10 highly correlated products in sequence based on a customer's purchase history:
+Product Id #: Here are the top 10 products to be displayed by the recommendation system to the above customer based on the purchase history of other customers on the website.
 
 ![image](https://user-images.githubusercontent.com/38769913/51402144-a8680600-1b1a-11e9-8c45-3f8177516a48.png)
 
-### Conclusion: 
+### 4. Item-Item Based Collaborative Filtering System
 
-Product Id #: Here are the top 10 products to be displayed by the recommendation system to the above customer based on the purchase history of other customers in the website.
-
-### Recommendation system part III: 
-
-#### Cold start problem for new businesses: When a business is setting up its e-commerce website for the first time without any historical data on product rating
-
-For a business without any user-item purchase history, a search engine based recommendation system can be designed for users. The product recommendations can be based on textual clustering analysis given in product description.
-
-#### Visualizing product clusters in subset of data:
+This system is useful for a business without any user-item purchase history. A search engine-based recommendation system can be designed for users where the product recommendations are based on textual clustering analysis given in the product description. Predictions are done based on other products from the same cluster (based on text analysis of the product description) on key search words.
 
 ![image](https://user-images.githubusercontent.com/38769913/51402355-393ee180-1b1b-11e9-9f98-8af45733d496.png)
 
-### Top words in the first 3 clusters based on text analysis and clustering techniques applied to product description:
+## Summary
+This recommendation system works best if a business is setting up its e-commerce website for the first time and does not have user-item purchase/rating history initially. This system helps users get good recommendations to start with. Once the buyers have a purchase history, the recommendation engine can use the model-based collaborative filtering technique to provide more personalized recommendations.
 
-### Top terms per cluster:
-
-#### Cluster 1:
- light
- watt
- volt
- led
- power
- fan
- bulb
- bulbs
- lighting
- home
-
-#### Cluster 2:
-
- painted
- wood
- insulation
- ft
- primed
- 65
- proposition
- nbsp
- residents
- california
-
-####  Cluster 3:
- water
- concrete
- use
- ft
- metal
- used
- provides
- designed
- high
- fiberglass
-
-
-### Recommendation Technique: 
-
-Once a cluster is identified based on the user's search words, the recommendation system can display items from the corresponding product clusters based on the product descriptions.
-
-### Summary:
-This works best if a business is setting up its e-commerce website for the first time and does not have user-item purchase/rating history to start with initally. This recommendation system will help the users get a good recommendation to start with and once the buyers have a purchased history, the recommendation engine can use the model based collaborative filtering technique.
+By implementing this comprehensive recommendation system, businesses can enhance their customers' shopping experience, leading to increased customer satisfaction and loyalty.
